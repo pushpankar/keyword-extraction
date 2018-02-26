@@ -4,8 +4,8 @@ from torch.utils.data import Dataset
 from random import randint
 
 class JobDataset(Dataset):
-	def __init__(self, csv_file):
-		self.data = pd.read_csv(csv_file)
+	def __init__(self, df):
+		self.data = df
 
 	def __len__(self):
 		return self.data.shape[0]
@@ -21,8 +21,8 @@ class JobDataset(Dataset):
 			sample["related"] = 1
 		else:
 			true_title = self.data[1][idx]
-			false_label = self.data[self.data[1] != true_title][1].sample()
-			sample["title"] = false_label
+			false_label = self.data[self.data[1] != true_title][1].sample(1)
+			sample["title"] = list(false_label)[0]
 			sample["related"] = -1
 
 		return sample

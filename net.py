@@ -17,6 +17,8 @@ class Net(nn.Module):
 		self.fc2 = nn.Linear(hidden_size//8, 1)
 
 	def forward(self, description, title):
+		description = description.t()
+		title = title.t()
 		description_embed = self.embedding(description)
 		title_embed = self.embedding(description)
 		description_hiddens, description_hidden = self.gru(description_embed)
@@ -27,4 +29,4 @@ class Net(nn.Module):
 
 		context = attn_weights.bmm(description_hiddens.transpose(0, 1))
 
-		return context, title_hidden, attn_weights
+		return context.squeeze(), title_hidden.squeeze(), attn_weights.squeeze()
