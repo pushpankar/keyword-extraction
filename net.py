@@ -24,8 +24,7 @@ class Net(nn.Module):
 		description_hiddens, description_hidden = self.gru(description_embed)
 
 		_, title_hidden = self.gru(title_embed)
-		attn_weights = self.attn(description_hidden,
-								 description_hiddens)
+		attn_weights = self.attn(description_hidden, description_hiddens)
 
 		context = attn_weights.bmm(description_hiddens.transpose(0, 1))
 
